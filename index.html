@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Your Name] — Illustration</title>
+<meta name="description" content="Ink and watercolor illustration.">
+
+<!--
+  HOW TO CUSTOMIZE THIS SITE
+  ---------------------------------------------------------------
+  ADDING A NEW PIECE
+  1. Save a web-sized image (under ~1MB, ~1400px on the long edge is plenty)
+     into the /images folder.
+  2. Add an entry to the ARTWORK array near the bottom of this file, in the
+     <script> block. Each entry needs:
+       src    — path to the image, e.g. 'images/your-file.jpg'
+       title  — the piece's name
+       medium — e.g. "Ink & watercolor"
+       bg     — a hex color sampled from that piece's background wash.
+                (Ask Claude to sample this for you from the image, or pick
+                by eye with a color picker — it should be a color that
+                appears in the painting's background, not the character.)
+     Order in the array = order on the page. Put your strongest piece first.
+  3. That's it — the gallery grid and hover effect work automatically for
+     any number of pieces, and each keeps its own natural proportions.
+
+  EDITING TEXT
+  Search for [Your Name], [your@email.com], and other bracketed text
+  throughout this file and replace with your real details.
+  ---------------------------------------------------------------
+-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Karla:wght@400;500;600;700&display=swap');
+
+  :root{
+    --paper:      #FAF8F3;
+    --paper-2:    #F1ECE1;
+    --ink:        #26241F;
+    --ink-soft:   #5C574E;
+    --line:       rgba(38,36,31,0.13);
+    --radius:     3px;
+    --bg-current: var(--paper);
+    --transition-speed: 0.6s;
+  }
+  @media (prefers-reduced-motion: reduce){
+    :root{ --transition-speed: 0.001ms; }
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Karla', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:500; margin:0; }
+  :focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 32px; }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:30;
+    background:rgba(250,248,243,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:74px; }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-style:italic; font-weight:500;
+    font-size:1.15rem; text-decoration:none;
+  }
+  .navlinks{ display:flex; gap:36px; list-style:none; margin:0; padding:0; }
+  .navlinks a{
+    text-decoration:none; font-size:0.86rem; letter-spacing:0.04em;
+    text-transform:uppercase; color:var(--ink-soft);
+    position:relative; padding-bottom:4px;
+  }
+  .navlinks a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:var(--ink); transform:scaleX(0); transform-origin:left;
+    transition:transform 0.3s ease;
+  }
+  .navlinks a:hover::after, .navlinks a:focus-visible::after{ transform:scaleX(1); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:86px 0 64px; max-width:720px; }
+  .eyebrow{
+    font-size:0.78rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:16px; display:block; font-weight:600;
+  }
+  .hero h1{ font-size:clamp(2.4rem, 5vw, 3.8rem); line-height:1.08; letter-spacing:-0.01em; }
+  .hero p.lede{ margin-top:22px; max-width:52ch; font-size:1.08rem; line-height:1.65; color:var(--ink-soft); }
+  .hero-cta{ margin-top:30px; display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 24px; background:var(--ink); color:var(--paper);
+    text-decoration:none; font-size:0.9rem; border-radius:var(--radius);
+    border:1px solid var(--ink); transition:background 0.25s ease, color 0.25s ease;
+  }
+  .btn:hover{ background:transparent; color:var(--ink); }
+  .btn-ghost{ color:var(--ink); background:transparent; border:1px solid var(--line); }
+  .btn-ghost:hover{ background:var(--paper-2); }
+
+  /* ---------- GALLERY (the signature moment) ---------- */
+  .gallery-section{
+    position:relative;
+    padding:70px 0 100px;
+    background-color: var(--bg-current);
+    transition: background-color var(--transition-speed) ease;
+  }
+  .gallery-section .wrap{ position:relative; z-index:1; }
+
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:12px; flex-wrap:wrap; gap:12px;
+  }
+  .section-head h2{ font-size:clamp(1.8rem, 3vw, 2.3rem); }
+  .hint{
+    font-size:0.82rem; color:var(--ink-soft); letter-spacing:0.02em;
+    margin-bottom:40px; display:block;
+  }
+
+  .gallery{
+    column-count:2;
+    column-gap:36px;
+  }
+  @media (max-width: 640px){ .gallery{ column-count:1; } }
+
+  .piece-btn{
+    display:block; width:100%; break-inside:avoid; margin:0 0 36px;
+    background:none; border:none; padding:0; cursor:pointer;
+    font:inherit; color:inherit; text-align:left;
+  }
+  .mat{
+    background:#FFFDF9;
+    padding:14px;
+    border-radius:var(--radius);
+    box-shadow:0 1px 3px rgba(38,36,31,0.08);
+    transition:transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease;
+  }
+  .piece-btn:hover .mat, .piece-btn:focus-visible .mat{
+    transform:translateY(-4px);
+    box-shadow:0 16px 28px rgba(38,36,31,0.16);
+  }
+  .mat img{ width:100%; height:auto; display:block; border-radius:1px; }
+
+  .piece-caption{ margin-top:12px; padding:0 2px; }
+  .piece-caption .title{ font-family:'Fraunces', serif; font-style:italic; font-size:1rem; }
+  .piece-caption .meta{ font-size:0.78rem; color:var(--ink-soft); margin-top:2px; }
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    padding:5vh 5vw;
+    background-color: var(--lb-bg, rgba(20,18,15,0.92));
+    opacity:0; pointer-events:none;
+    transition:opacity 0.35s ease, background-color 0.35s ease;
+  }
+  .lightbox.open{ opacity:1; pointer-events:auto; }
+  .lightbox-inner{ max-width:min(92vw, 900px); max-height:90vh; text-align:center; }
+  .lightbox img{
+    max-width:100%; max-height:78vh; width:auto; height:auto;
+    display:block; margin:0 auto; box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    border-radius:2px;
+  }
+  .lightbox-caption{ margin-top:18px; color:#FAF8F3; }
+  .lightbox-caption .title{ font-family:'Fraunces', serif; font-style:italic; font-size:1.2rem; }
+  .lightbox-caption .meta{ font-size:0.85rem; opacity:0.75; margin-top:4px; }
+  .lightbox-close{
+    position:absolute; top:22px; right:28px;
+    background:none; border:none; color:#FAF8F3; font-size:1.8rem;
+    cursor:pointer; line-height:1; padding:8px;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{ padding:90px 0; max-width:640px; }
+  .about h2{ font-size:clamp(1.8rem, 3vw, 2.3rem); margin-bottom:20px; }
+  .about p{ font-size:1.04rem; line-height:1.75; color:var(--ink-soft); }
+  .about p + p{ margin-top:14px; }
+
+  /* ---------- CONTACT ---------- */
+  .contact{ background:var(--ink); color:var(--paper); padding:86px 0 96px; }
+  .contact .wrap{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+  .contact h2{ color:var(--paper); font-size:clamp(1.8rem, 3.2vw, 2.5rem); }
+  .contact .lede{ color:#C9C3B4; margin-top:14px; line-height:1.6; max-width:44ch; }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; color:#B0AA9C; margin-bottom:8px; }
+  .field input, .field textarea{
+    width:100%; background:transparent; border:none; border-bottom:1px solid rgba(250,248,243,0.28);
+    color:var(--paper); font-family:'Karla', sans-serif; font-size:1rem; padding:8px 2px; resize:vertical;
+  }
+  .field input:focus, .field textarea:focus{ outline:none; border-bottom-color:var(--paper); }
+  .contact .btn{ background:var(--paper); border-color:var(--paper); color:var(--ink); margin-top:6px; }
+  .contact .btn:hover{ background:transparent; color:var(--paper); }
+  .direct-email{ margin-top:22px; font-size:0.9rem; color:#C9C3B4; }
+  .direct-email a{ color:var(--paper); text-decoration:underline; text-underline-offset:3px; }
+
+  footer{ padding:26px 0; text-align:center; font-size:0.78rem; color:var(--ink-soft); background:var(--paper); }
+
+  @media (max-width: 640px){
+    .navlinks{ display:none; }
+    .contact .wrap{ grid-template-columns:1fr; gap:36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <a class="logo" href="#top">[Your Name]</a>
+    <ul class="navlinks">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <span class="eyebrow">Ink &amp; watercolor illustration</span>
+    <h1>Small worlds,<br>painted in.</h1>
+    <p class="lede">
+      [Your Name] makes ink-and-watercolor illustrations — costumed animals,
+      unlikely astronauts, and other characters who seem to have wandered
+      out of a story that hasn't been written down yet.
+    </p>
+    <div class="hero-cta">
+      <a class="btn" href="#work">See the work</a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+    </div>
+  </section>
+
+  <section id="work" class="gallery-section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Selected work</h2>
+      </div>
+      <span class="hint">Hover a piece to step into it. Click to look closer.</span>
+
+      <div class="gallery" id="gallery"><!-- populated by JS from the ARTWORK list below --></div>
+    </div>
+  </section>
+
+  <section id="about" class="wrap">
+    <div class="about">
+      <h2>About</h2>
+      <p>
+        [A couple of sentences about you — where you're based, how long you've
+        been painting, what draws you to ink and watercolor specifically.]
+      </p>
+      <p>
+        [A line about what you're hoping to make or find next — picture books,
+        commissions, prints — so a visitor knows what to reach out about.]
+      </p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div>
+        <h2>Say hello</h2>
+        <p class="lede">Interested in a commission, a print, or just want to say hi? This goes straight to my inbox.</p>
+        <p class="direct-email">Prefer email directly? Write to <a href="mailto:your@email.com">[your@email.com]</a></p>
+      </div>
+      <form action="mailto:your@email.com" method="post" enctype="text/plain">
+        <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
+        <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@example.com" required></div>
+        <div class="field"><label for="message">Message</label><textarea id="message" name="message" rows="4" placeholder="What's on your mind?" required></textarea></div>
+        <button class="btn" type="submit">Send message</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 [Your Name]. All illustrations shown here are original work.</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-caption">
+      <div class="title" id="lightboxTitle"></div>
+      <div class="meta" id="lightboxMeta"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------------------------------------------------------------
+  // Add or reorder pieces here. See the comment block at the top of
+  // this file for full instructions.
+  // ---------------------------------------------------------------
+  const ARTWORK = [
+    {
+      src: 'images/raccoon-minstrel.jpg',
+      title: '[The Minstrel]',
+      medium: 'Ink & watercolor',
+      bg: '#E2503F'   // sampled from the painting's red background wash
+    },
+    {
+      src: 'images/cat-spacewalk.jpg',
+      title: '[Spacewalk]',
+      medium: 'Ink & watercolor',
+      bg: '#3E484C'   // sampled from the painting's navy background wash
+    }
+  ];
+
+  const galleryEl = document.getElementById('gallery');
+  const gallerySection = document.querySelector('.gallery-section');
+  const basePaper = getComputedStyle(document.documentElement).getPropertyValue('--paper').trim();
+
+  ARTWORK.forEach((art) => {
+    const btn = document.createElement('button');
+    btn.className = 'piece-btn';
+    btn.setAttribute('data-bg', art.bg);
+    btn.setAttribute('aria-label', 'View larger: ' + art.title);
+    btn.innerHTML = `
+      <div class="mat"><img src="${art.src}" alt="${art.title}" loading="lazy"></div>
+      <div class="piece-caption">
+        <div class="title">${art.title}</div>
+        <div class="meta">${art.medium}</div>
+      </div>
+    `;
+    btn.addEventListener('click', () => openLightbox(art));
+    galleryEl.appendChild(btn);
+  });
+
+  // hover / focus -> shift the gallery section's background to match the piece
+  function setSectionBg(hex){
+    gallerySection.style.setProperty('--bg-current', hex || basePaper);
+  }
+  galleryEl.addEventListener('pointerover', e => {
+    const btn = e.target.closest('.piece-btn');
+    if (btn) setSectionBg(btn.dataset.bg);
+  });
+  galleryEl.addEventListener('pointerleave', () => setSectionBg(null));
+  galleryEl.addEventListener('focusin', e => {
+    const btn = e.target.closest('.piece-btn');
+    if (btn) setSectionBg(btn.dataset.bg);
+  });
+  galleryEl.addEventListener('focusout', e => {
+    if (!galleryEl.contains(e.relatedTarget)) setSectionBg(null);
+  });
+
+  // ---------------- lightbox ----------------
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbTitle = document.getElementById('lightboxTitle');
+  const lbMeta = document.getElementById('lightboxMeta');
+  let lastFocused = null;
+
+  function hexToRgba(hex, alpha){
+    const h = hex.replace('#','');
+    const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function openLightbox(art){
+    lastFocused = document.activeElement;
+    lbImg.src = art.src;
+    lbImg.alt = art.title;
+    lbTitle.textContent = art.title;
+    lbMeta.textContent = art.medium;
+    lightbox.style.setProperty('--lb-bg', hexToRgba(art.bg, 0.94));
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lightboxClose').focus();
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox(); });
+</script>
+
+</body>
+</html>
