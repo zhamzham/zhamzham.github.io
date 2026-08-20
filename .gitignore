@@ -1,0 +1,25 @@
+# Claude Code local settings — not shared, machine-specific
+.claude/
+
+# Local project notes for Claude Code — kept private, not published
+CLAUDE.md
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editor folders (optional — see note below)
+.vscode/
+
+# Temp / backup files
+*.log
+*.tmp
+*~
+
+# Full-size original scans — kept locally, never committed (huge files)
+_originals/
