@@ -272,15 +272,41 @@
     <div class="wrap">
       <div>
         <h2>Say hello</h2>
-        <p class="lede">Just want to say hi? This goes straight to my inbox.</p>
-        <p class="direct-email">Prefer email directly? Write to <a href="mailto:your@email.com">[your@email.com]</a></p>
+        <p class="lede">Just want to say hi? A contact address is coming soon.</p>
       </div>
+      <!--
+        CONTACT FORM — CURRENTLY TURNED OFF
+        ---------------------------------------------------------------
+        Switched off on purpose: there is no real email address on this
+        site yet, only the placeholder your@email.com. That placeholder
+        is a REAL address at a real provider, so leaving it live could
+        have sent a visitor's message to a stranger.
+
+        To be clear: this form never stored anyone's details anywhere.
+        There is no server and no form service behind it. A mailto: form
+        just opens the visitor's own email program.
+
+        TO TURN IT BACK ON:
+        1. Replace your@email.com below with your real address.
+        2. Delete the "FORM START" line below and the "FORM END" line
+           after the form, so the form is no longer hidden.
+        3. Put the direct-email line back if you want it:
+           <p class="direct-email">Prefer email directly? Write to
+           <a href="mailto:you@example.com">you@example.com</a></p>
+
+        Worth knowing before you rely on it: most browsers now ignore
+        mailto: forms, so visitors may click Send and have nothing
+        happen. A free form service (Formspree, Basin) is more reliable
+        and still needs no server.
+      -->
+      <!-- FORM START
       <form action="mailto:your@email.com" method="post" enctype="text/plain">
         <div class="field"><label for="name">Name</label><input id="name" name="name" type="text" placeholder="Your name" required></div>
         <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="you@example.com" required></div>
         <div class="field"><label for="message">Message</label><textarea id="message" name="message" rows="4" placeholder="What's on your mind?" required></textarea></div>
         <button class="btn" type="submit">Send message</button>
       </form>
+      FORM END -->
     </div>
   </section>
 
